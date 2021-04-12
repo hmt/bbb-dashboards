@@ -11,7 +11,7 @@ volumes:
 
 services:
   influxdb:
-    image: quay.io/influxdb/influxdb:v2.0.3
+    image: quay.io/influxdb/influxdb:v2.0.4
     restart: always
     ports:
       - 8086:8086
@@ -55,13 +55,24 @@ services:
 
   bbb-exporter:
     container_name: "bbb-exporter"
-    image: greenstatic/bigbluebutton-exporter:v0.6.0
+    image: greenstatic/bigbluebutton-exporter
     networks:
       - back-tier
     environment:
       RECORDINGS_METRICS_READ_FROM_DISK: "false"
     env_file:
       - bbb.env
+    restart: unless-stopped
+
+  bbb-exporter2:
+    container_name: "bbb-exporter2"
+    image: greenstatic/bigbluebutton-exporter
+    networks:
+      - back-tier
+    environment:
+      RECORDINGS_METRICS_READ_FROM_DISK: "false"
+    env_file:
+      - bbb2.env
     restart: unless-stopped
 
   grafana:
